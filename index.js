@@ -1,45 +1,44 @@
-class Timer{
-    constructor(durationInput,startButton,pauseButton){
-        this.DurationInput = durationInput;
-        this.StartButton = startButton;
-        this.PauseButton = pauseButton;
-
-        this.StartButton.addEventListener('click',this.Start); // All Methods / properties especially when nested are not available in this scope
-        this.PauseButton.addEventListener('click',this.Pause);
-    };
-    ImportantMethodToCall(){
-        console.log('An Important Thing was done');
-    }
-
-    Start = () => {
-        this.Tick();
-        this.interval = setInterval(this.Tick, 1000); //1000ms = 1s
-    };
-
-    Pause = () => {
-        clearInterval(this.interval);
-    };
-    
-    Tick = () => {
-        console.log('tick');
-    };
-
-   
-
-   
-}
-
 
 const durationInput = document.querySelector('#duration');
 const startButton = document.querySelector('#start');
 const pauseButton = document.querySelector('#pause');
+const circle = document.querySelector('circle');
+const perimeter = circle.getAttribute('r') * 2 * Math.PI;
+circle.setAttribute('stroke-dasharray',perimeter);
 
-const timer = new Timer(durationInput,startButton,pauseButton);
+let duration;
+const checkTimerActions = {
+    onStart(totalDuration) {
+        duration = totalDuration;
+    },
+    onTick(timeRemaining) {
+        circle.setAttribute('stroke-dashoffset',
+        (perimeter * timeRemaining)/ duration - perimeter);
+        
+    },
+    onComplete() {
+        console.log('Timer is Completed');
+    }
+};
+// Timer class is called and activated here
+const timer = new Timer(durationInput,startButton,pauseButton,checkTimerActions);
+// These callbacks get invoked at very specific times during our Timer life cycle
+// We have to look for a way to tell the outside word of what is happening in the timer class in javascript
 // timer.Start();
 
 
 // NOTE WHenever we call setIntervl() we get back a variable called id(an integer) which is the number of runs/ running interval.
 
+       //AT START
+// dasharray = perimeter;
+// dashoffset = 0
+
+       //AT END
+// dasharray = perimeter;
+// dashoffset = -1 * perimeter
+
+//offsetAtStart = p * 30/30 - p /= p - p
+// offsetAtEnd = p * 0/30 - p  /= -p
 
 
 
